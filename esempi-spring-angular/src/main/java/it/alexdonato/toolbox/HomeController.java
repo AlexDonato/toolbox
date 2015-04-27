@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -67,22 +69,24 @@ public class HomeController {
 		value = "/admin/**",
 		method = RequestMethod.GET
 		)	
-	public ModelAndView goToAdmin () {
+	public ModelAndView goToAdmin (HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		model.addObject("nome", "cippa");
 		model.setViewName("admin/protected");
+		logger.info("Sessione gotoAdmin: " + session.getId());
 		return model;
 	}
 	
 	@RequestMapping (
-			value = "/salva-domande",
+			value = "/admin/salva-domande",
 			method = RequestMethod.POST,
 			produces = "application/json"
 			)
-	public @ResponseBody DomandaBean salvaDomande (@RequestBody DomandaBean domanda) {
+	public @ResponseBody DomandaBean salvaDomande (@RequestBody DomandaBean domanda, HttpSession session) {
 		logger.info("entrato: Benvenuto " + domanda);
 		domanda.setDomanda("Sei un coglione?");
 		domanda.setRisposta("NOOOOOO");
+		logger.info("Sessione salvaDomande: " + session.getId());
 		return domanda;
 	}
 }
